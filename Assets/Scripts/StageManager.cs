@@ -20,7 +20,7 @@ public class StageManager : MonoBehaviour
     }
 
     void GenerateGround(){
-        Instantiate(groundPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Instantiate(groundPrefab, new Vector3(0, -1, 0), Quaternion.identity);
     }
 
     void GeneratePlayer(){

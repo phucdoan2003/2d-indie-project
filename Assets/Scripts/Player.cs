@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     //float jumpDelay = .5f;
 
     [SerializeField] GameObject bullet;
-    float bulletDelay = 0.5f;
+    float bulletDelay = 0.25f;
     float timeSinceLastBullet;
 
     // Start is called before the first frame update
@@ -67,16 +67,20 @@ public class Player : MonoBehaviour
 
     void FireBullet(){
         if(timeSinceLastBullet > bulletDelay){
-            if(Input.GetKey(KeyCode.RightArrow)){
+            if(Input.GetMouseButton(0)){
+                Vector2 bulletDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                spriteRenderer.sprite = playerAttack;
+                spriteRenderer.flipX = bulletDir.x < 0? true : false;
+                float bulletAngle = Vector2.Angle(bulletDir, new Vector2(1, 0));
+                bulletDir.Normalize();
+                Debug.Log(bulletDir);
                 GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-                newBullet.GetComponent<Bullet>().BulletInit(1, 0);
+                newBullet.GetComponent<Bullet>().BulletInit(bulletDir);
+                timeSinceLastBullet = 0;
+                //spriteRenderer.sprite = playerNormal;
+            } else{
+                spriteRenderer.sprite = playerNormal;
             }
-            if(Input.GetKey(KeyCode.LeftArrow)){
-                GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-                newBullet.GetComponent<Bullet>().BulletInit(-1, 0);
-                newBullet.GetComponent<SpriteRenderer>().flipX = true;
-            }
-            timeSinceLastBullet = 0;
         }
     }
 

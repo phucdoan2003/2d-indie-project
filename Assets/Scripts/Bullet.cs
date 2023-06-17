@@ -7,8 +7,7 @@ public class Bullet : MonoBehaviour
     float bulletSpeed = 10;
     float travelTime = 2;
     float timeSinceFire;
-    int xDir;
-    int yDir;
+    Vector2 direction;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,16 +18,16 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         HandleTime();
-        MoveBullet(xDir, yDir);
+        MoveBullet();
     }
 
-    public void BulletInit(int x, int y){
-        xDir = x;
-        yDir = y;
+    public void BulletInit(Vector2 dir){
+        transform.rotation = Quaternion.FromToRotation(transform.right, dir);
+        
     }
 
-    void MoveBullet(int x, int y){
-        transform.Translate(new Vector3(x, y, 0) * bulletSpeed * Time.deltaTime);
+    void MoveBullet(){
+        transform.Translate(new Vector2(1, 0) * bulletSpeed * Time.deltaTime);
     }
 
     void HandleTime(){
