@@ -9,12 +9,15 @@ public class Player : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     Animator animator;
+
+    [SerializeField] Sprite jumpSprite;
     Rigidbody2D rb2d;
     bool canJump = true;
+    bool inAir = false;
     //float jumpDelay = .5f;
 
     [SerializeField] GameObject bullet;
-    float bulletDelay = 0.25f;
+    float bulletDelay = 1f;
     float timeSinceLastBullet;
 
     // Start is called before the first frame update
@@ -57,14 +60,20 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Ground"){
             canJump = true;
+            inAir = false;            
         }
     }
 
     void UpdateAnimation(){
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)){
+        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && !inAir){
             animator.SetBool("isRunning", true);
         } else {
             animator.SetBool("isRunning", false);
+        }
+        if(inAir){
+            animator.SetBool("playerInAir", true);
+        } else {
+            animator.SetBool("playerInAir", false);
         }
     }
 
@@ -72,12 +81,16 @@ public class Player : MonoBehaviour
         if(canJump){
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             canJump = false;
+            animator.SetTrigger("playerJump");
+            inAir = true;
+            
         }
     }
 
     void FireBullet(){
         if(timeSinceLastBullet > bulletDelay){
             if(Input.GetMouseButton(0)){
+                animator.SetTrigger("playerAttack");
                 Vector2 bulletDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
                 spriteRenderer.flipX = bulletDir.x < 0? true : false;
                 float bulletAngle = Vector2.Angle(bulletDir, new Vector2(1, 0));
