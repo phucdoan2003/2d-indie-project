@@ -83,7 +83,6 @@ public class Player : MonoBehaviour
             canJump = false;
             animator.SetTrigger("playerJump");
             inAir = true;
-            
         }
     }
 
