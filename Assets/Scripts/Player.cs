@@ -8,8 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] float jumpForce = 2.5f;
     SpriteRenderer spriteRenderer;
 
-    [SerializeField] Sprite playerNormal;
-    [SerializeField] Sprite playerAttack;
+    Animator animator;
     Rigidbody2D rb2d;
     bool canJump = true;
     //float jumpDelay = .5f;
@@ -23,6 +22,7 @@ public class Player : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         FireBullet();
+        UpdateAnimation();
         if(timeSinceLastBullet < bulletDelay){
             timeSinceLastBullet += Time.deltaTime;
         }
@@ -43,9 +44,10 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.D))
         {
+            
             spriteRenderer.flipX = false;
             transform.Translate(new Vector3(playerSpeed, 0, 0) * Time.deltaTime);
-        } 
+        }
         if (Input.GetKey(KeyCode.Space))
         {
             PlayerJump();
@@ -55,6 +57,14 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Ground"){
             canJump = true;
+        }
+    }
+
+    void UpdateAnimation(){
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)){
+            animator.SetBool("isRunning", true);
+        } else {
+            animator.SetBool("isRunning", false);
         }
     }
 
@@ -69,7 +79,6 @@ public class Player : MonoBehaviour
         if(timeSinceLastBullet > bulletDelay){
             if(Input.GetMouseButton(0)){
                 Vector2 bulletDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                spriteRenderer.sprite = playerAttack;
                 spriteRenderer.flipX = bulletDir.x < 0? true : false;
                 float bulletAngle = Vector2.Angle(bulletDir, new Vector2(1, 0));
                 bulletDir.Normalize();
@@ -78,9 +87,7 @@ public class Player : MonoBehaviour
                 newBullet.GetComponent<Bullet>().BulletInit(bulletDir);
                 timeSinceLastBullet = 0;
                 //spriteRenderer.sprite = playerNormal;
-            } else{
-                spriteRenderer.sprite = playerNormal;
-            }
+            } 
         }
     }
 

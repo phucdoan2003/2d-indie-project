@@ -15,7 +15,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Projectile
   - Collision
   - 
   - 
@@ -44,6 +44,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 3553739335
+    locked: 0
+  - name: Projectiles
+    uniqueID: 2193992545
     locked: 0
   - name: Units
     uniqueID: 392123503
