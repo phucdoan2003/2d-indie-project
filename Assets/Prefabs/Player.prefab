@@ -174,8 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   jumpForce: 10
-  jumpSprite: {fileID: 0}
-  bullet: {fileID: 654368666670828509, guid: 77ab00111180919449437470ec6bbc5e, type: 3}
+  projectile: {fileID: 654368666670828509, guid: 77ab00111180919449437470ec6bbc5e, type: 3}
 --- !u!95 &4312059640600285912
 Animator:
   serializedVersion: 5

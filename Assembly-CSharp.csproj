@@ -40,9 +40,11 @@
     <Analyzer Include="D:\Game Projects\Unity Editor\2022.3.1f1-x86_64\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Bullet.cs" />
+     <Compile Include="Assets\Scripts\Mob.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerProjectile.cs" />
      <Compile Include="Assets\Scripts\StageManager.cs" />
+     <Compile Include="Assets\Scripts\Boar.cs" />
      <None Include="Assets\Sprites\Free Pixel Art Forest\Free Pixel Art Forest\license.txt" />
      <None Include="Assets\Sprites\Free Pixel Art Forest\Free Pixel Art Forest\readme.txt" />
      <None Include="Assets\Sprites\Free Pixel Art Forest\Free Pixel Art Forest\changelog.txt" />

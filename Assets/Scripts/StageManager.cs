@@ -6,11 +6,12 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField] GameObject groundPrefab;
     [SerializeField] GameObject playerPrefab;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject boarPrefab;
+    void Awake()
     {
         GenerateGround();
         GeneratePlayer();
+        GenerateMob();
     }
 
     // Update is called once per frame
@@ -24,6 +25,10 @@ public class StageManager : MonoBehaviour
     }
 
     void GeneratePlayer(){
-        Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
+        Instantiate(playerPrefab, new Vector3(0, 2, 0), Quaternion.identity);
+    }
+
+    void GenerateMob(){
+        Instantiate(boarPrefab, new Vector3(2, 1, 0), Quaternion.identity);
     }
 }

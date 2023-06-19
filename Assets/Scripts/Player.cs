@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    int playerHealth = 100;
+    int playerDamage = 10;
     [SerializeField] float playerSpeed = 5f;
     [SerializeField] float jumpForce = 2.5f;
     SpriteRenderer spriteRenderer;
 
     Animator animator;
 
-    [SerializeField] Sprite jumpSprite;
     Rigidbody2D rb2d;
     bool canJump = true;
     bool inAir = false;
     //float jumpDelay = .5f;
 
-    [SerializeField] GameObject bullet;
-    float bulletDelay = 1f;
-    float timeSinceLastBullet;
+    [SerializeField] GameObject projectile;
+    float projectileDelay = 1f;
+    float timeSinceLastProjectile;
 
     // Start is called before the first frame update
     void Start()
@@ -32,10 +33,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         MovePlayer();
-        FireBullet();
+        FireProjectile();
         UpdateAnimation();
-        if(timeSinceLastBullet < bulletDelay){
-            timeSinceLastBullet += Time.deltaTime;
+        if(timeSinceLastProjectile < projectileDelay){
+            timeSinceLastProjectile += Time.deltaTime;
         }
     }
 
@@ -81,27 +82,32 @@ public class Player : MonoBehaviour
         if(canJump){
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             canJump = false;
-            animator.SetTrigger("playerJump");
             inAir = true;
         }
     }
 
-    void FireBullet(){
-        if(timeSinceLastBullet > bulletDelay){
+    void FireProjectile(){
+        if(timeSinceLastProjectile > projectileDelay){
             if(Input.GetMouseButton(0)){
                 animator.SetTrigger("playerAttack");
-                Vector2 bulletDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                spriteRenderer.flipX = bulletDir.x < 0? true : false;
-                float bulletAngle = Vector2.Angle(bulletDir, new Vector2(1, 0));
-                bulletDir.Normalize();
-                Debug.Log(bulletDir);
-                GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-                newBullet.GetComponent<Bullet>().BulletInit(bulletDir);
-                timeSinceLastBullet = 0;
+                Vector2 projectileDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                spriteRenderer.flipX = projectileDir.x < 0;
+                float projectileAngle = Vector2.Angle(projectileDir, new Vector2(1, 0));
+                projectileDir.Normalize();
+                //Debug.Log(projectileDir);
+                GameObject newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+                newProjectile.GetComponent<PlayerProjectile>().ProjectileInit(projectileDir);
+                timeSinceLastProjectile = 0;
                 //spriteRenderer.sprite = playerNormal;
             } 
         }
     }
 
+    public int GetPlayerDamage(){
+        return playerDamage;
+    }
 
+    public void TakeDamage(int damage){
+        playerHealth -= damage;
+    }
 }
